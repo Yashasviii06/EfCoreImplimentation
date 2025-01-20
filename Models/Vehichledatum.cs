@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using EfCoreImplimentation.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.OpenApi;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreImplimentation.Models;
@@ -29,8 +29,9 @@ public static class VehichledatumEndpoints
         {
             return await db.Vehichledata.ToListAsync();
         })
-        .WithName("GetAllVehichledata")
-        .WithOpenApi();
+        .WithName("GetAllVehichledata");
+
+
 
         group.MapGet("/{id}", async Task<Results<Ok<Vehichledatum>, NotFound>> (int vehid, DbfirstapproachContext db) =>
         {
@@ -40,8 +41,9 @@ public static class VehichledatumEndpoints
                     ? TypedResults.Ok(model)
                     : TypedResults.NotFound();
         })
-        .WithName("GetVehichledatumById")
-        .WithOpenApi();
+        .WithName("GetVehichledatumById");
+
+
 
         group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int vehid, Vehichledatum vehichledatum, DbfirstapproachContext db) =>
         {
@@ -55,17 +57,17 @@ public static class VehichledatumEndpoints
                   );
             return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
         })
-        .WithName("UpdateVehichledatum")
-        .WithOpenApi();
+        .WithName("UpdateVehichledatum");
+
 
         group.MapPost("/", async (Vehichledatum vehichledatum, DbfirstapproachContext db) =>
         {
             db.Vehichledata.Add(vehichledatum);
             await db.SaveChangesAsync();
-            return TypedResults.Created($"/api/Vehichledatum/{vehichledatum.VehId}",vehichledatum);
+            return TypedResults.Created($"/api/Vehichledatum/{vehichledatum.VehId}", vehichledatum);
         })
-        .WithName("CreateVehichledatum")
-        .WithOpenApi();
+        .WithName("CreateVehichledatum");
+
 
         group.MapDelete("/{id}", async Task<Results<Ok, NotFound>> (int vehid, DbfirstapproachContext db) =>
         {
@@ -74,7 +76,7 @@ public static class VehichledatumEndpoints
                 .ExecuteDeleteAsync();
             return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
         })
-        .WithName("DeleteVehichledatum")
-        .WithOpenApi();
+        .WithName("DeleteVehichledatum");
+      
     }
 }
